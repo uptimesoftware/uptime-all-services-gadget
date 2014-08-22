@@ -20,8 +20,8 @@
 	</grid_info>
 	<Content type="html">
 	<![CDATA[
+		<head>
 		#includeResources(jquery)
-		
 		<link href="__UPTIME_HTTP_BASE__/styles/uptime.css?v=7.3.0.7" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.dataTables.js?v=1"></script>
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.min.js?v=1"></script>
@@ -29,6 +29,15 @@
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/js/uptime/Utility.js?v=1"></script>
 
 		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/ServiceStatusTable.js?v=1"></script>
+	</head>
+
+	<body>
+		<div id="edit">
+			Empty Edit Menu
+			<button id="save">Save</button>
+		</div>
+
+		<div id="AllServicesView">
 		<img id="allServicesListLoading" src="/images/autocomplete-indicator.gif" />
 		<span id="allServicesListNoData" class="hidden">No status data</span>			<div id="allServicesListAlternateQueryContainer" class="float_right hidden">
 				<label for="allServicesListAlternateQuery">Hide OK Service Monitors</label>
@@ -60,16 +69,64 @@
 				<tbody>
 				</tbody>
 			</table>
-					<script>
-			$(document).ready(function() {
+		</div>
+	<script>
+		function editSettings(settings) {
+
+			$("#AllServicesView").hide();
+			$("#edit").show();
+
+
+		}
+
+		function doError(status) {
+			$("#error").empty();
+			uptimeErrorFormatter.getErrorBox(status, "Error communicating with up.time").appendTo('#error');
+			$("#error").slideDown();
+			$("#save").prop("disabled", false);
+		}
+
+		function doRender(settings) {
+		$("#edit").hide();
+		$("#AllServicesView").show();
 				var serviceStatusTable = new UPTIME.ServiceStatusTable({
 					id : "allServicesList",
 					ajaxParams : "&queryName=GET_STATUS",
 					timeout : 60000,
 					alternateAjaxParams : "&queryName=GET_STATUS&queryParameter=hideOk&queryValue=true"				});
 				serviceStatusTable.start();
+		}
+
+		$("#save").click(function() {
+			var settings = {
+				test: "test"
+			};
+
+			uptimeGadget.saveSettings(settings).then(doRender, doError);
+
+		});
+
+
+
+		uptimeGadget.registerOnResizeHandler(function(dimensions) {
+			$("body").height(dimensions.height).width(dimensions.width);
+		});
+		uptimeGadget.registerOnEditHandler(function() {
+			$("#edit").hide();
+			$("#AllServicesView").show()
+			uptimeGadget.loadSettings().then(function(settings) {
+				editSettings(settings);
 			});
-			</script>
+		});
+		uptimeGadget.registerOnLoadHandler(function(onLoadData) {
+			$("#AllServicesView").data("dimensions", onLoadData.dimensions);
+			if (onLoadData.hasPreloadedSettings()) {
+				doRender(onLoadData.settings);
+			} else {
+				uptimeGadget.loadSettings(doRender, doError);
+			}
+		});
+	</script>
 	]]>
 	</Content>
 </Module>
