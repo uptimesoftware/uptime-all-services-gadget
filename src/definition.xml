@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="All Services Gadget" description="The Enhanced Advanced All Services Tab" thumbnail="ResourceScanThm.png"/>
+	<gadget_version>
+		0.1
+	</gadget_version>
+	<grid_info>
+		<supported_versions>
+			7.3
+		</supported_versions>
+		<supported_platforms>
+			windows,linux
+		</supported_platforms>
+		<requires_agent_scripts>
+			false
+		</requires_agent_scripts>
+		<upgrade_in_place>
+			true
+		</upgrade_in_place>
+	</grid_info>
+	<Content type="html">
+	<![CDATA[
+		#includeResources(jquery)
+		
+		<link href="__UPTIME_HTTP_BASE__/styles/uptime.css?v=7.3.0.7" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.dataTables.js?v=1"></script>
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.min.js?v=1"></script>
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.widgets.min.js?v=1"></script>
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/js/uptime/Utility.js?v=1"></script>
+
+		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/ServiceStatusTable.js?v=1"></script>
+		<img id="allServicesListLoading" src="/images/autocomplete-indicator.gif" />
+		<span id="allServicesListNoData" class="hidden">No status data</span>			<div id="allServicesListAlternateQueryContainer" class="float_right hidden">
+				<label for="allServicesListAlternateQuery">Hide OK Service Monitors</label>
+				<input id="allServicesListAlternateQuery" type="checkbox" checked="checked" />
+			</div>
+						<table id="allServicesList" class="tablehelper hidden zebra">
+				<colgroup>
+					<col />
+					<col class="ServiceElement hidden" />
+					<col class="ServiceStatus" />
+					<col class="ServiceAck" />
+					<col class="ServiceSplunk hidden" />
+					<col class="ServiceLastCheck" />
+					<col class="ServiceDuration" />
+					<col />
+				</colgroup>
+				<thead>
+					<tr>
+						<th data-sorter="text">Monitor</th>
+						<th class="ServiceElement hidden" data-sorter="text">Element</th>
+						<th class="ServiceStatus" data-sorter="state">Status</th>
+						<th data-sorter="ack" data-filter="false">Ack</th>
+						<th class="ServiceSplunk hidden" data-sorter="false" data-filter="false">Splunk</th>
+						<th data-sorter="text" data-filter="false">Last Check</th>
+						<th data-sorter="duration" data-filter="false">Duration</th>
+						<th class="monitorOutputHeader" data-sorter="text">Monitor Information</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+					<script>
+			$(document).ready(function() {
+				var serviceStatusTable = new UPTIME.ServiceStatusTable({
+					id : "allServicesList",
+					ajaxParams : "&queryName=GET_STATUS",
+					timeout : 60000,
+					alternateAjaxParams : "&queryName=GET_STATUS&queryParameter=hideOk&queryValue=true"				});
+				serviceStatusTable.start();
+			});
+			</script>
+	]]>
+	</Content>
+</Module>
