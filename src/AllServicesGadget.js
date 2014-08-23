@@ -1,6 +1,8 @@
+$(function() {
         function editSettings(settings) {
 
-            $("#AllServicesView").hide();
+            //$("#AllServicesView").hide();
+            $("#EditBar").show();
             $("#edit").show();
 
 
@@ -14,8 +16,9 @@
         }
 
         function doRender(settings) {
+        $("#EditBar").hide();
         $("#edit").hide();
-        $("#AllServicesView").show();
+        //$("#AllServicesView").show();
                 var serviceStatusTable = new UPTIME.ServiceStatusTable({
                     id : "allServicesList",
                     ajaxParams : "&queryName=GET_STATUS",
@@ -28,8 +31,10 @@
             var settings = {
                 test: "test"
             };
-
             uptimeGadget.saveSettings(settings).then(doRender, doError);
+            $("#EditBar").hide();
+            $("#edit").hide();
+            //$("#AllServicesView").show();
 
         });
 
@@ -39,8 +44,9 @@
             $("body").height(dimensions.height).width(dimensions.width);
         });
         uptimeGadget.registerOnEditHandler(function() {
+            $("#EditBar").hide();
             $("#edit").hide();
-            $("#AllServicesView").show()
+            //$("#AllServicesView").show();
             uptimeGadget.loadSettings().then(function(settings) {
                 editSettings(settings);
             });
@@ -53,3 +59,4 @@
                 uptimeGadget.loadSettings(doRender, doError);
             }
         });
+});

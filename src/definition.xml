@@ -33,18 +33,21 @@
 	</head>
 
 	<body>
+	<script type="text/javascript">if (top != self) { $("body").css("padding", "0"); }</script>
 		<div id="edit">
-			Empty Edit Menu
-			<button id="save">Save</button>
+			<div id="allServicesListAlternateQueryContainer" class="float_left hidden">
+				<label for="allServicesListAlternateQuery">Hide OK Service Monitors</label>
+				<input id="allServicesListAlternateQuery" type="checkbox" checked="checked" />
+			</div>
+			<div class="float_right">
+				<button id="save">Save</button>
+			</div>
 		</div>
 
 		<div id="AllServicesView">
 			<img id="allServicesListLoading" src="/images/autocomplete-indicator.gif" />
 			<span id="allServicesListNoData" class="hidden">No status data</span>
-			<div id="allServicesListAlternateQueryContainer" class="float_right hidden">
-				<label for="allServicesListAlternateQuery">Hide OK Service Monitors</label>
-				<input id="allServicesListAlternateQuery" type="checkbox" checked="checked" />
-			</div>
+
 				<table id="allServicesList" class="tablehelper hidden zebra">
 					<colgroup>
 						<col />
@@ -56,7 +59,7 @@
 						<col class="ServiceDuration" />
 						<col />
 					</colgroup>
-					<thead>
+					<thead id="EditBar">
 						<tr>
 							<th data-sorter="text">Monitor</th>
 							<th class="ServiceElement hidden" data-sorter="text">Element</th>
