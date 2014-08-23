@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-	<ModulePrefs title="All Services Gadget" description="The Enhanced Advanced All Services Tab" thumbnail="ResourceScanThm.png"/>
+	<ModulePrefs title="All Services Gadget" description="The Enhanced   All Services Tab" thumbnail="ResourceScanThm.png"/>
 	<gadget_version>
 		0.1
 	</gadget_version>
@@ -20,15 +20,16 @@
 	</grid_info>
 	<Content type="html">
 	<![CDATA[
-		<head>
+	<head>
 		#includeResources(jquery)
 		<link href="__UPTIME_HTTP_BASE__/styles/uptime.css?v=7.3.0.7" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.dataTables.js?v=1"></script>
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.min.js?v=1"></script>
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.widgets.min.js?v=1"></script>
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/js/uptime/Utility.js?v=1"></script>
-
 		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/ServiceStatusTable.js?v=1"></script>
+		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/AllServicesGadget.js?v=1"></script>
+
 	</head>
 
 	<body>
@@ -38,95 +39,40 @@
 		</div>
 
 		<div id="AllServicesView">
-		<img id="allServicesListLoading" src="/images/autocomplete-indicator.gif" />
-		<span id="allServicesListNoData" class="hidden">No status data</span>			<div id="allServicesListAlternateQueryContainer" class="float_right hidden">
+			<img id="allServicesListLoading" src="/images/autocomplete-indicator.gif" />
+			<span id="allServicesListNoData" class="hidden">No status data</span>
+			<div id="allServicesListAlternateQueryContainer" class="float_right hidden">
 				<label for="allServicesListAlternateQuery">Hide OK Service Monitors</label>
 				<input id="allServicesListAlternateQuery" type="checkbox" checked="checked" />
 			</div>
-						<table id="allServicesList" class="tablehelper hidden zebra">
-				<colgroup>
-					<col />
-					<col class="ServiceElement hidden" />
-					<col class="ServiceStatus" />
-					<col class="ServiceAck" />
-					<col class="ServiceSplunk hidden" />
-					<col class="ServiceLastCheck" />
-					<col class="ServiceDuration" />
-					<col />
-				</colgroup>
-				<thead>
-					<tr>
-						<th data-sorter="text">Monitor</th>
-						<th class="ServiceElement hidden" data-sorter="text">Element</th>
-						<th class="ServiceStatus" data-sorter="state">Status</th>
-						<th data-sorter="ack" data-filter="false">Ack</th>
-						<th class="ServiceSplunk hidden" data-sorter="false" data-filter="false">Splunk</th>
-						<th data-sorter="text" data-filter="false">Last Check</th>
-						<th data-sorter="duration" data-filter="false">Duration</th>
-						<th class="monitorOutputHeader" data-sorter="text">Monitor Information</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	<script>
-		function editSettings(settings) {
-
-			$("#AllServicesView").hide();
-			$("#edit").show();
-
-
-		}
-
-		function doError(status) {
-			$("#error").empty();
-			uptimeErrorFormatter.getErrorBox(status, "Error communicating with up.time").appendTo('#error');
-			$("#error").slideDown();
-			$("#save").prop("disabled", false);
-		}
-
-		function doRender(settings) {
-		$("#edit").hide();
-		$("#AllServicesView").show();
-				var serviceStatusTable = new UPTIME.ServiceStatusTable({
-					id : "allServicesList",
-					ajaxParams : "&queryName=GET_STATUS",
-					timeout : 60000,
-					alternateAjaxParams : "&queryName=GET_STATUS&queryParameter=hideOk&queryValue=true"				});
-				serviceStatusTable.start();
-		}
-
-		$("#save").click(function() {
-			var settings = {
-				test: "test"
-			};
-
-			uptimeGadget.saveSettings(settings).then(doRender, doError);
-
-		});
-
-
-
-		uptimeGadget.registerOnResizeHandler(function(dimensions) {
-			$("body").height(dimensions.height).width(dimensions.width);
-		});
-		uptimeGadget.registerOnEditHandler(function() {
-			$("#edit").hide();
-			$("#AllServicesView").show()
-			uptimeGadget.loadSettings().then(function(settings) {
-				editSettings(settings);
-			});
-		});
-		uptimeGadget.registerOnLoadHandler(function(onLoadData) {
-			$("#AllServicesView").data("dimensions", onLoadData.dimensions);
-			if (onLoadData.hasPreloadedSettings()) {
-				doRender(onLoadData.settings);
-			} else {
-				uptimeGadget.loadSettings(doRender, doError);
-			}
-		});
-	</script>
+				<table id="allServicesList" class="tablehelper hidden zebra">
+					<colgroup>
+						<col />
+						<col class="ServiceElement hidden" />
+						<col class="ServiceStatus" />
+						<col class="ServiceAck" />
+						<col class="ServiceSplunk hidden" />
+						<col class="ServiceLastCheck" />
+						<col class="ServiceDuration" />
+						<col />
+					</colgroup>
+					<thead>
+						<tr>
+							<th data-sorter="text">Monitor</th>
+							<th class="ServiceElement hidden" data-sorter="text">Element</th>
+							<th class="ServiceStatus" data-sorter="state">Status</th>
+							<th data-sorter="ack" data-filter="false">Ack</th>
+							<th class="ServiceSplunk hidden" data-sorter="false" data-filter="false">Splunk</th>
+							<th data-sorter="text" data-filter="false">Last Check</th>
+							<th data-sorter="duration" data-filter="false">Duration</th>
+							<th class="monitorOutputHeader" data-sorter="text">Monitor Information</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+	</body>
 	]]>
 	</Content>
 </Module>
