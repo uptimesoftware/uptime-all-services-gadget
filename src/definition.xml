@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-	<ModulePrefs title="All Services Gadget" description="The Enhanced   All Services Tab" thumbnail="ResourceScanThm.png"/>
+	<ModulePrefs title="All Services Gadget" description="The Enhanced Advanced  All Services Tab" thumbnail="ResourceScanThm.png"/>
 	<gadget_version>
-		0.1
+		<%= pkg.gadget_version %>
 	</gadget_version>
 	<grid_info>
 		<supported_versions>
@@ -23,12 +23,12 @@
 	<head>
 		#includeResources(jquery)
 		<link href="__UPTIME_HTTP_BASE__/styles/uptime.css?v=7.3.0.7" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.dataTables.js?v=1"></script>
-		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.min.js?v=1"></script>
-		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.widgets.min.js?v=1"></script>
-		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/js/uptime/Utility.js?v=1"></script>
-		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/ServiceStatusTable.js?v=1"></script>
-		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/AllServicesGadget.js?v=1"></script>
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.dataTables.js?v=<%= pkg.gadget_version %>"></script>
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.min.js?v=<%= pkg.gadget_version %>"></script>
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.widgets.min.js?v=<%= pkg.gadget_version %>"></script>
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/js/uptime/Utility.js?v=<%= pkg.gadget_version %>"></script>
+		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/ServiceStatusTable.js?v=<%= pkg.gadget_version %>"></script>
+		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/AllServicesGadget.js?v=<%= pkg.gadget_version %>"></script>
 
 	</head>
 
