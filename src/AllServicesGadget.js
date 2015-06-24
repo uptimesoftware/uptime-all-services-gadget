@@ -14,9 +14,9 @@ $(function() {
             $("#error").slideDown();
             $("#save").prop("disabled", false);
         }
-
+				
         function doRender(settings) {
-        $("#EditBar").hide();
+        $("#EditBar").show();
         $("#edit").hide();
         //$("#AllServicesView").show();
                 var serviceStatusTable = new UPTIME.ServiceStatusTable({
@@ -29,10 +29,11 @@ $(function() {
 
         $("#save").click(function() {
             var settings = {
-                test: "test"
+                test: "test",
             };
+			console.log($("#allServicesListAlternateQuery").value);
             uptimeGadget.saveSettings(settings).then(doRender, doError);
-            $("#EditBar").hide();
+            $("#EditBar").show();
             $("#edit").hide();
             //$("#AllServicesView").show();
 
@@ -44,7 +45,7 @@ $(function() {
             $("body").height(dimensions.height).width(dimensions.width);
         });
         uptimeGadget.registerOnEditHandler(function() {
-            $("#EditBar").hide();
+            $("#EditBar").show();
             $("#edit").hide();
             //$("#AllServicesView").show();
             uptimeGadget.loadSettings().then(function(settings) {

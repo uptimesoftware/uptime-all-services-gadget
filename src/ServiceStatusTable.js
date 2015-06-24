@@ -35,8 +35,20 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 				$(e).closest("table").find("> thead > .tablesorter-filter-row td:nth-child(" + index + ")").hide();
 			});
 			table.find("> thead .disabled").hide();
+			if ($.tablesorter.storage) {
+				// get saved filters
+				var f = $.tablesorter.storage(this, 'tablesorter-filters') || [];
+				$.tablesorter.setFilters( $(this), f, true );
+			}
+		})
+		.bind('filterEnd', function () {
+			if ($.tablesorter.storage) {
+				// save current filters
+				var f = $.tablesorter.getFilters( $(this) );
+				$.tablesorter.storage(this, 'tablesorter-filters', f);
+			}
 		});
-
+		
 		table.tablesorter({
 			theme : "bootstrap",
 			headerTemplate : "{icon} {content}",
@@ -45,7 +57,7 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 			widgetOptions : {
 				filter_functions : {
 					2 : {
-						"Non-OK" : function(e, n, f, i) {
+						"Non-MAINT" : function(e, n, f, i) {
 							return "CRIT" == e || "WARN" == e || "UNKNOWN" == e;
 						},
 						"Critical" : function(e, n, f, i) {
@@ -64,7 +76,8 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 							return "MAINT" == e;
 						}
 					}
-				}
+				},
+				filter_saveFilters : true
 			}
 		});
 
@@ -100,7 +113,7 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 			}
 			return false;
 		}
-
+		
 		var columns = [ "monitor", "element", "status", "ack", "splunk", "lastCheck", "duration", "message" ];
 		function doUpdate() {
 			$.ajax('/main.php?page=GetServiceStatusTableJson' + currentAjaxParams,
@@ -127,6 +140,10 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 							var changed = false;
 							while (row = data.shift()) {
 								var rowId = id + "_monitor_" + row.id;
+								var EntityID = 0;
+								var MaintStatus = "test";
+								//EntityID = populateEntityID(row.id);
+								//MaintStatus = populateMaintStatus(EntityID);
 								if (document.getElementById(rowId) == null) {
 									rowsToAppend += '<tr id="' + rowId + '">' + '<td id="' + rowId + '_monitor" class="bold">'
 											+ row.monitor + '</td>' + '<td id="' + rowId + '_element" class="'
@@ -137,7 +154,7 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 											+ rowId + '_splunk" class="' + (hideSplunk ? 'hidden' : 'IconCell') + '">'
 											+ (hideSplunk ? '' : row.splunk) + '</td>' + '<td id="' + rowId + '_lastCheck">'
 											+ row.lastCheck + '</td>' + '<td id="' + rowId + '_duration">' + row.duration
-											+ '</td>' + '<td id="' + rowId + '_message">' + row.message + '</td>' + '</tr>';
+											+ '</td>' + '<td id="' + rowId + '_message">' + row.message + '</td>' + '<td id="' + rowId + '_test"  class="ButtonCell">' + "<button type\"button\" onclick=\"window.open('/ajax/jsonCommand.php?command=MAINTENANCE_ON_DEMAND&amp;action=" + MaintStatus + "&amp;id=" + EntityID + "','AckStatus','width=675,height=300,scrollbars=yes,resizable=yes')\">Temp Maintenance</button>" + '</td>' + '</tr>';
 									changed = true;
 								} else {
 									for ( var i = 0; i < columns.length; i++) {
@@ -157,6 +174,7 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 										}
 									}
 								}
+								
 								rowIds[rowId] = true;
 							}
 							for ( var i = 0; i < tbody[0].childNodes.length; i++) {
@@ -174,6 +192,7 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 							table.find(".ServiceSplunk").toggleClass("hidden", hideSplunk);
 							if (changed) {
 								table.trigger("update");
+								table.trigger('search', false);
 							}
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
@@ -190,6 +209,49 @@ if (typeof UPTIME.ServiceStatusTable == "undefined") {
 						}
 					});
 		}
+		
+		function populateEntityID(id) {
+			var currentURL = $("script#ownScript").attr("src");
+			var getDropDownsPath = currentURL.substr(0,$("script#ownScript").attr("src").lastIndexOf("/")+1) + 'maintenance.php';
+			var data_from_php = "";
+					
+			url = getDropDownsPath + "?value=entity&monitor_id="+id;
+			$.ajaxSetup({
+				async: false
+			});
+			
+			$.getJSON(url, function(data) {
+				$.each(data, function(key, val) {
+					data_from_php=val;
+				});
+			});
+			$.ajaxSetup({
+				async: true
+			});
+			return data_from_php;
+		}
+		
+		function populateMaintStatus(id) {
+			var currentURL = $("script#ownScript").attr("src");
+			var getDropDownsPath = currentURL.substr(0,$("script#ownScript").attr("src").lastIndexOf("/")+1) + 'maintenance.php';
+			var data_from_php = "";
+					
+			url = getDropDownsPath + "?value=status&entity_id="+id;
+			$.ajaxSetup({
+				async: false
+			});
+			
+			$.getJSON(url, function(data) {
+				$.each(data, function(key, val) {
+					data_from_php=val;
+				});
+			});
+			$.ajaxSetup({
+				async: true
+			});
+			return data_from_php;
+		}
+		
 		;
 	};
 

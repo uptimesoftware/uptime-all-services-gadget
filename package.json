@@ -1,6 +1,6 @@
 {
   "name": "uptime.AllServicesGadget",
-  "version": "0.1.0",
+  "version": "0.211",
   "description": "The Enhanced Advanced All Services Tab",
   "main": "src/AllServicesGadget.js",
   "repository": {

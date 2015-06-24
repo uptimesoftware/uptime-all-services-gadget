@@ -6,7 +6,7 @@
 	</gadget_version>
 	<grid_info>
 		<supported_versions>
-			7.3,7.5
+			7.3,7.4,7.5
 		</supported_versions>
 		<supported_platforms>
 			windows,linux
@@ -27,8 +27,9 @@
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.min.js?v=<%= pkg.gadget_version %>"></script>
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/ajax/jquery.tablesorter.widgets.min.js?v=<%= pkg.gadget_version %>"></script>
 		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/js/uptime/Utility.js?v=<%= pkg.gadget_version %>"></script>
+		<script type="text/javascript" src="__UPTIME_HTTP_BASE__/js/uptime/html_functions.js?v=<%= pkg.gadget_version %>"></script>
 		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/ServiceStatusTable.js?v=<%= pkg.gadget_version %>"></script>
-		<script type="text/javascript" src="__UPTIME_GADGET_BASE__/AllServicesGadget.js?v=<%= pkg.gadget_version %>"></script>
+		<script type="text/javascript" id="ownScript" src="__UPTIME_GADGET_BASE__/AllServicesGadget.js?v=<%= pkg.gadget_version %>"></script>
 
 	</head>
 
@@ -37,7 +38,7 @@
 		<div id="edit">
 			<div id="allServicesListAlternateQueryContainer" class="float_left hidden">
 				<label for="allServicesListAlternateQuery">Hide OK Service Monitors</label>
-				<input id="allServicesListAlternateQuery" type="checkbox" checked="checked" />
+				<input id="allServicesListAlternateQuery" type="checkbox" checked="checked"/>
 			</div>
 			<div class="float_right">
 				<button id="save">Save</button>
@@ -48,33 +49,36 @@
 			<img id="allServicesListLoading" src="/images/autocomplete-indicator.gif" />
 			<span id="allServicesListNoData" class="hidden">No status data</span>
 
-				<table id="allServicesList" class="tablehelper hidden zebra">
-					<colgroup>
-						<col />
-						<col class="ServiceElement hidden" />
-						<col class="ServiceStatus" />
-						<col class="ServiceAck" />
-						<col class="ServiceSplunk hidden" />
-						<col class="ServiceLastCheck" />
-						<col class="ServiceDuration" />
-						<col />
-					</colgroup>
-					<thead id="EditBar">
-						<tr>
-							<th data-sorter="text">Monitor</th>
-							<th class="ServiceElement hidden" data-sorter="text">Element</th>
-							<th class="ServiceStatus" data-sorter="state">Status</th>
-							<th data-sorter="ack" data-filter="false">Ack</th>
-							<th class="ServiceSplunk hidden" data-sorter="false" data-filter="false">Splunk</th>
-							<th data-sorter="text" data-filter="false">Last Check</th>
-							<th data-sorter="duration" data-filter="false">Duration</th>
-							<th class="monitorOutputHeader" data-sorter="text">Monitor Information</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
+		
+			<table id="allServicesList" class="tablehelper hidden zebra">
+				<colgroup>
+					<col />
+					<col class="ServiceElement hidden" />
+					<col class="ServiceStatus" />
+					<col class="ServiceAck" />
+					<col class="ServiceSplunk hidden" />
+					<col class="ServiceLastCheck" />
+					<col class="ServiceDuration" />
+					<col />
+				</colgroup>
+				<thead id="EditBar">
+					<tr>
+						<th data-sorter="text">Monitor</th>
+						<th class="ServiceElement hidden" data-sorter="text">Element</th>
+						<th class="ServiceStatus" data-sorter="state">Status</th>
+						<th data-sorter="ack" data-filter="false">Ack</th>
+						<th class="ServiceSplunk hidden" data-sorter="false" data-filter="false">Splunk</th>
+						<th data-sorter="text" data-filter="false">Last Check</th>
+						<th data-sorter="duration" data-filter="false">Duration</th>
+						<th class="monitorOutputHeader" data-sorter="text">Monitor Information</th>
+
+						<th class="temporaryMaintenance" data-filter="false">Temporary Maintenance</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 	</body>
 	]]>
 	</Content>
