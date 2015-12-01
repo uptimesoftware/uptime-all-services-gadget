@@ -2,7 +2,7 @@
 <Module>
 	<ModulePrefs title="All Services Gadget" description="The Enhanced Advanced  All Services Tab" thumbnail="ResourceScanThm.png"/>
 	<gadget_version>
-		<%= pkg.gadget_version %>
+		1.0
 	</gadget_version>
 	<grid_info>
 		<supported_versions>
